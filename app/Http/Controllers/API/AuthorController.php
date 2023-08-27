@@ -61,7 +61,14 @@ class AuthorController extends BaseAPIController
      */
     public function show(string $id)
     {
-        //
+        try {
+            
+            $data = $this->repository->find($id);
+
+            return $this->successResponse($data, 'success', 200);
+        } catch (\Exception $ex) {
+            return $this->errorResponse($ex->getMessage(), $ex->getCode());
+        }
     }
 
     /**
@@ -77,7 +84,17 @@ class AuthorController extends BaseAPIController
      */
     public function update(Request $request, string $id)
     {
-        //
+        try {
+            $author = [
+                'name' => $request->name,
+            ];
+            
+            $data = $this->repository->update($author, $id);
+
+            return $this->successResponse($data, 'Succesfully Updated', 200);
+        } catch (\Exception $ex) {
+            return $this->errorResponse($ex->getMessage(), $ex->getCode());
+        }
     }
 
     /**
@@ -85,6 +102,12 @@ class AuthorController extends BaseAPIController
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $data = $this->repository->delete($id);
+
+            return $this->successResponse($data, 'Succesfully Deleted', 200);
+        } catch (\Exception $ex) {
+            return $this->errorResponse($ex->getMessage(), $ex->getCode());
+        }
     }
 }

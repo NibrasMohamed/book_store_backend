@@ -46,4 +46,24 @@ class BookRepository{
         }
         return false; // Book not found
     }
+
+    public function storeBookCover($file, $fileName = "cover", $filePath = '/covers')
+    {
+        // Ensure the file is an image
+        if ($file->isValid() && strpos($file->getMimeType(), 'image/') === 0) {
+            // Get the original file extension
+            $fileExtension = $file->getClientOriginalExtension();
+
+            // Generate a unique filename with the original extension
+            $fileAssignedName = time() . '_' . $fileName . '.' . $fileExtension;
+
+            // Store the image in the specified directory with the assigned name
+            $file->storeAs($filePath, $fileAssignedName, 'public');
+
+            // Return the path to the stored image
+            return $filePath . '/' . $fileAssignedName;
+        }
+
+        return null;
+    }
 }

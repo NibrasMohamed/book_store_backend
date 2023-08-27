@@ -43,11 +43,17 @@ class BooksController extends BaseAPIController
     public function store(Request $request)
     {
         try {
+            
+            $cover = $this->repository->storeBookCover($request->cover_image,  str_replace(' ', '', $request->name));
+            
             $book = [
                 'name' => $request->name,
+                'description' => $request->description,
                 'published_date' => $request->published_date,
                 'author_id' => $request->author_id,
+                'image_path' => $cover
             ];
+
             $data = $this->repository->create($book);
 
             return $this->successResponse($data, 'success', 200);
@@ -112,4 +118,6 @@ class BooksController extends BaseAPIController
             return $this->errorResponse($ex->getMessage(), $ex->getCode());
         }
     }
+
+    
 }

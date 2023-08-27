@@ -25,6 +25,15 @@ class UserRepository
 
         $user->roles()->attach($role);
 
+        if ($user->roles->where('name', 'author')->count()>0) {
+            $author = [
+                'name' => $user->name,
+                'user_id' => $user->id
+            ];
+            $authoRepository = new AuthorRepository;
+            $author = $authoRepository->createAuthor($author);
+            $user['author'] = $author;
+        }
 
         return $user;
     }
@@ -34,8 +43,8 @@ class UserRepository
             // Authentication successful
             $user = Auth::user();
             $token = $user->createToken('PasswordLogin')->accessToken;
-    
-            return ['token' => $token];
+
+            return ['token' => $token["token"]];
         }
     
         // Authentication failed

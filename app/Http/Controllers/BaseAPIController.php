@@ -20,6 +20,6 @@ class BaseAPIController extends Controller
         return response()->json([
             'status' => 'error',
             'message' => $message,
-        ], $statusCode);
+        ], $statusCode=0?500:$statusCode);
     }
 }

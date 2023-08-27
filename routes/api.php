@@ -15,10 +15,15 @@ use Laravel\Passport\Passport;
 |
 */
 
-// Passport::routes();
-
 Route::group(['namespace' => 'App\Http\Controllers\API'], function () {
     Route::post('register', 'RegisterController@register');
     Route::post('login', 'RegisterController@login');
+
+    Route::group([], function(){
+        // Route::get('/users', 'UserController@getAllUsers');
+        Route::resource('authors', 'AuthorController');
+        Route::resource('books', 'BooksController');
+
+    });
 });
 

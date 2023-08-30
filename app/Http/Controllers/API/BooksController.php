@@ -18,10 +18,10 @@ class BooksController extends BaseAPIController
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         try {
-            $data = $this->repository->all();
+            $data = $this->repository->books($request->search);
 
             return $this->successResponse($data, 'success', 200);
         } catch (\Exception $ex) {
@@ -44,8 +44,12 @@ class BooksController extends BaseAPIController
     {
         try {
             
-            $cover = $this->repository->storeBookCover($request->cover_image,  str_replace(' ', '', $request->name));
-            
+            if(isset($request->cover_image)){
+                $cover = $this->repository->storeBookCover($request->cover_image,  str_replace(' ', '', $request->name));
+            }else{
+                $cover = null;
+            }
+
             $book = [
                 'name' => $request->name,
                 'description' => $request->description,

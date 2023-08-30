@@ -34,20 +34,27 @@ class UserRepository
             $author = $authoRepository->createAuthor($author);
             $user['author'] = $author;
         }
+        $token = $user->createToken('auth_token')->accessToken;
 
-        return $user;
+        return ['user' => $user, 'token' => $token];
     }
 
     public function userLogin($email, $password){
         if (Auth::attempt(['email' => $email, 'password' => $password])) {
             // Authentication successful
             $user = Auth::user();
-            $token = $user->createToken('PasswordLogin')->accessToken;
-
-            return ['token' => $token["token"]];
+            $token = $user->createToken('auth_token')->accessToken;
+            $user = auth()->user();
+            
+            return ['token' => $token, 'user' => $user, 'role' => $user->roles];
         }
     
         // Authentication failed
         return ['error' => 'Unauthorized'];
+    }
+
+    public function userLogout(User $user) : bool {
+        $user->token()->revoke();
+        return true;
     }
 }

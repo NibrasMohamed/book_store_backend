@@ -17,6 +17,27 @@ class BookRepository{
         return $this->model->all();
     }
 
+    public function books($search){
+        $books = Book::join('authors', 'authors.id', 'books.author_id')
+                ->select(
+                    'books.name',
+                    'authors.name as author',
+                    'books.published_date',
+                    'books.description',
+                    'books.image_path',
+                )->where('authors.status', '=', 1);
+        if ($search != '') {
+            $books->where(function($query) use ($search){
+                $query->where('books.name','like', '%'.$search.'%');
+                $query->orWhere('authors.name','like', '%'.$search.'%');
+            });
+        }
+
+        $books = $books->get();
+
+        return $books;
+    }
+
     public function find($id)
     {
         return $this->model->find($id);

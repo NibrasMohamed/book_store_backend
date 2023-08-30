@@ -16,14 +16,14 @@ use Laravel\Passport\Passport;
 */
 
 Route::group(['namespace' => 'App\Http\Controllers\API'], function () {
-    Route::post('register', 'RegisterController@register');
-    Route::post('login', 'RegisterController@login');
+    Route::post('register', 'AuthenticationController@register');
+    Route::post('login', 'AuthenticationController@login');
 
-    Route::group([], function(){
+    Route::group(['middleware' => 'auth:api'], function(){
         // Route::get('/users', 'UserController@getAllUsers');
         Route::resource('authors', 'AuthorController');
         Route::resource('books', 'BooksController');
-
+        Route::get('logout', 'AuthenticationController@logout');
     });
 });
 

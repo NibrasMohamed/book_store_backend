@@ -45,7 +45,7 @@ class AuthorController extends BaseAPIController
         try {
             $author = [
                 'name' => $request->name,
-                'user_id' => $request->user_id
+                'user_id' => $request->user_id?$request->user_id:0
             ];
 
             $data = $this->repository->createAuthor($author);

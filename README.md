@@ -34,7 +34,11 @@ This is the backend API for the Book Store application, built with Laravel.
 
 - `php artisan passport:install`
 
-9. Start the Laravel development server:
+9. Make Sure to Link the Storage
+
+- `php artisan storage:link`
+
+10. Start the Laravel development server:
 
 - `php artisan serve`
 

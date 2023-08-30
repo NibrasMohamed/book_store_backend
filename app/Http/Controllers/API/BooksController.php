@@ -4,6 +4,8 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\BaseAPIController;
 use App\Http\Controllers\Controller;
+use App\Models\Author;
+use App\Models\User;
 use App\Repositories\BookRepository;
 use Illuminate\Http\Request;
 
@@ -50,15 +52,19 @@ class BooksController extends BaseAPIController
                 $cover = null;
             }
 
-            $book = [
-                'name' => $request->name,
-                'description' => $request->description,
-                'published_date' => $request->published_date,
-                'author_id' => $request->author_id,
-                'image_path' => $cover
-            ];
-
-            $data = $this->repository->create($book);
+            $author_id = auth()->user()->author->id;
+            if($author_id){
+                $book = [
+                    'name' => $request->name,
+                    'description' => $request->description,
+                    'published_date' => $request->published_date,
+                    'author_id' => $author_id,
+                    'image_path' => $cover
+                ];
+    
+                $data = $this->repository->create($book);
+            }
+            
 
             return $this->successResponse($data, 'success', 200);
         } catch (\Exception $ex) {
@@ -123,5 +129,16 @@ class BooksController extends BaseAPIController
         }
     }
 
-    
+    public function getAuthorBooks($user_id){
+        try {
+
+            $author_id = User::find($user_id)->author->id;
+            $data = $this->repository->getAuthorBooks($author_id);
+
+            return $this->successResponse($data, 'Success', 200);
+        } catch (\Exception $ex) {
+            return $this->errorResponse($ex->getMessage(), $ex->getCode());
+        }
+
+    }    
 }

@@ -63,5 +63,16 @@ class AuthorRepository{
         }
         return false; // Author not found
     }
+
+    public function changeStatus(array $data, $id){
+        $author = $this->model->find($id);
+        if ($author) {
+            $author->status= $data['status']=='true'?1:0;
+            $author->save();
+
+            return true;
+        }
+        return false;
+    }
     
 }

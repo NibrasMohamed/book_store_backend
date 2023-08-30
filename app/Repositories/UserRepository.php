@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Models\Author;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -30,7 +31,7 @@ class UserRepository
                 'name' => $user->name,
                 'user_id' => $user->id
             ];
-            $authoRepository = new AuthorRepository;
+            $authoRepository = new AuthorRepository(new Author);
             $author = $authoRepository->createAuthor($author);
             $user['author'] = $author;
         }
@@ -56,5 +57,12 @@ class UserRepository
     public function userLogout(User $user) : bool {
         $user->token()->revoke();
         return true;
+    }
+
+    public function getRoles(){
+        $roles = Role::whereNot('name', 'admin')
+                ->orWhereNot('display_name', 'Admin')
+                ->get();
+        return $roles;
     }
 }

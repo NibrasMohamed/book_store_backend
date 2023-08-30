@@ -54,4 +54,8 @@ class User extends Authenticatable
 
         return $user->roles->contains('name', $role);
     }
+
+    public function author(){
+        return $this->hasOne(Author::class);
+    }
 }

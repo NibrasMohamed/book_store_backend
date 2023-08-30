@@ -18,12 +18,17 @@ use Laravel\Passport\Passport;
 Route::group(['namespace' => 'App\Http\Controllers\API'], function () {
     Route::post('register', 'AuthenticationController@register');
     Route::post('login', 'AuthenticationController@login');
+    Route::get('/get-roles', 'RoleController@getRoles');
+    Route::get('/get-books', 'BooksController@index');
 
     Route::group(['middleware' => 'auth:api'], function(){
-        // Route::get('/users', 'UserController@getAllUsers');
-        Route::resource('authors', 'AuthorController');
-        Route::resource('books', 'BooksController');
         Route::get('logout', 'AuthenticationController@logout');
+
+        Route::resource('authors', 'AuthorController');
+        Route::post('authors/change-status/{id}', 'AuthorController@changeStatus');
+        Route::resource('books', 'BooksController');
+        Route::get('books/author-books/{user_id}', 'BooksController@getAuthorBooks');
+
     });
 });
 

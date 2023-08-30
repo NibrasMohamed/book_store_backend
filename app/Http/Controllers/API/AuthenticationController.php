@@ -48,10 +48,8 @@ class AuthenticationController extends BaseAPIController
         return $this->successResponse($response); // Successful login with token
     }
 
-    public function logout(UserLoginRequest $request)
+    public function logout(Request $request)
     {
-        $email = $request->input('email');
-        $password = $request->input('password');
 
         $response = $this->userRepository->userLogout($request->user());
 
@@ -59,6 +57,6 @@ class AuthenticationController extends BaseAPIController
            return $this->errorResponse($response, 401); // Unauthorized
         }
 
-        return $this->successResponse(null, 'Succesfully Logged Out'); // Successful login with token
+        return $this->successResponse(null, 'Succesfully Logged Out'); // Successful Logout
     }
 }

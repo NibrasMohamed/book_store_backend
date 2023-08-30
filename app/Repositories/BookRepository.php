@@ -87,4 +87,10 @@ class BookRepository{
 
         return null;
     }
+
+    public function getAuthorBooks($author_id){
+        $books = Book::where('author_id', '=', $author_id)->get();
+
+        return $books;
+    }
 }

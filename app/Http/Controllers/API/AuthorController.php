@@ -110,4 +110,15 @@ class AuthorController extends BaseAPIController
             return $this->errorResponse($ex->getMessage(), $ex->getCode());
         }
     }
+
+    public function changeStatus(Request $request, $id){
+        try {
+            $data = $this->repository->changeStatus($request->toArray(),$id);
+
+            return $this->successResponse($data, 'Status Successfuly Updated ', 200);
+        } catch (\Exception $ex) {
+            return $this->errorResponse($ex->getMessage(), $ex->getCode());
+        }
+    }
+    
 }
